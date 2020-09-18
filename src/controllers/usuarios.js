@@ -1,14 +1,23 @@
 const { response } = require("express");
 const { genSaltSync, hashSync } = require("bcryptjs");
 const Usuario = require("../models/usuario");
-const { generarJWT } = require('../helpers/jwt');
+const { generarJWT } = require("../helpers/jwt");
 
 const getUsuarios = async (req, res) => {
-	const usuarios = await Usuario.find({}, "nombre email rol google");
+	const desde = Number(req.query.by) || 0;
+
+	const [usuarios, total] = await Promise.all([
+		Usuario.find({}, "nombre email rol google img")
+			.skip(desde) //esto es de la paginacion
+			.limit(5), //limite para los datos
+
+		Usuario.countDocuments(),
+	]);
 
 	res.json({
 		ok: true,
 		usuarios,
+		total,
 	});
 };
 
@@ -38,7 +47,7 @@ const crearUsuario = async (req, res = response) => {
 		res.json({
 			ok: true,
 			usuario,
-			token
+			token,
 		});
 	} catch (error) {
 		console.log(error);
@@ -107,11 +116,11 @@ const eliminarUsuario = async (req, res = response) => {
 			});
 		}
 
-		await Usuario.findByIdAndDelete( id );
+		await Usuario.findByIdAndDelete(id);
 
 		res.status(200).json({
 			ok: true,
-			msg: 'Usuario eliminado'
+			msg: "Usuario eliminado",
 		});
 	} catch (error) {
 		console.error(error);
