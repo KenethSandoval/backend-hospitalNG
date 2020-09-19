@@ -1,12 +1,12 @@
 # Angular Hospital - Backend
 
-##Ejecutar
+## Ejecutar
 
 ```bash
 npm install
 
 ```
-##.env
+## .env
 PORT 
 DB_CNN
 JWT_SECRET
