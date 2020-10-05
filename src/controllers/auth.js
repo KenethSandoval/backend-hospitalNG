@@ -31,7 +31,8 @@ const logIn = async (req, res = response) => {
 
 		//Generar token
 		const token = await generarJWT(usuarioDB._id);
-		res.status(200).json({
+
+		res.json({
 			ok: true,
 			token,
 		});
@@ -65,7 +66,6 @@ const googleSignIn = async (req, res = response) => {
 			// existe usuario
 			usuario = usuarioDB;
 			usuario.google = true;
-			usuario.password = "@@@";
 		}
 
 		//Guardar en DB
@@ -89,9 +89,11 @@ const renewToken = async (req, res = response) => {
 
 	const token = await generarJWT( id );
 
+	const usuario = await Usuario.findById( id );
 	res.json({
 		ok: true,
-		token
+		token,
+		usuario
 	});
 }
 
