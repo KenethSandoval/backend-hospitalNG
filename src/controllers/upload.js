@@ -38,7 +38,7 @@ const fileUpload = (req, res = response) => {
 		return res.status(400).json({
 			ok: false,
 			msg: `La extension .${extensionArchivo} no es valida`,
-		});
+	});
     }
     
 	// generar el nombre del archivo
@@ -54,8 +54,8 @@ const fileUpload = (req, res = response) => {
 			res.status(500).json({
 				ok: false,
                 msg: "Error al subir la imagen",
-			});
-        }
+	});
+      }
         
         actualizarImagen(filter, id, nombreArchivo);
 
